@@ -1,0 +1,82 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[11pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Naive Bayes classifier}
+\author{Mayank Agarwal}
+\maketitle
+
+\underline{Introduction}
+\begin{enumerate}
+
+\item Naive Bayes classifiers are a family of simple probabilistic classifiers that are based on applying Bayes theorem with strong (naive) assumptions of independence between the features.
+
+\item Despite its strong assumptions of independence, this method remains quite popular in text categorization applications, and with proper pre-processing can compete against more sophisticated algorithms like SVM.
+
+\item This is a highly scalable classifier since it requires a number of parameters linear in the number of features.
+
+\item An advantage of Naive Bayes classifiers is that they require a small number of training examples to estimate the parameters necessary for classification.
+
+\end{enumerate}
+
+\underline{Probabilistic model}
+\begin{enumerate}
+
+\item Abstractly, naive Bayes is a conditional probability model, i.e., given an observation $x = (x_1, x_2, ..., x_n)$, it assigns to this instance probabilities:\\
+$$p(C_k | x_1, ..., x_n)$$ \\
+for each of K possible outcomes.\\
+\\
+Using Bayes theorem, this conditional probability can be written as: \\
+$$p(C_k | x) = \frac{p(C_k) p(x | C_k)}{p(x)}$$\\
+in Bayesian probability terminology, this is equivalent to $posterior = \frac{prior \times likelihood}{estimate}$\\
+
+\item Note than the denominator in the above equation does not depend on $C_k$ and is constant for a given observation $x$. Therefore, we can ignore the \textit{estimate} in our calculations. 
+
+\item The numerator is equivalent to the joint probability distribution $P(C_k, x_1, x_2, ..., x_n)$
+
+\end{enumerate}
+
+\underline{References:}
+\begin{enumerate}
+\item Naive Bayes classifier. (2017, January 20). In Wikipedia, The Free Encyclopedia. Retrieved 01:02, February 22, 2017, from \url{https://en.wikipedia.org/w/index.php?title=Naive_Bayes_classifier&oldid=761016630}
+\end{enumerate}
+
+\end{document}
