@@ -49,8 +49,8 @@ class GaussianNaiveBayes(object):
 		y_train = np.array(y_train)
 
 		self.__validateDataSize(x_train, y_train)
-		self.mean, self.variance, self.classes = self.__getMeansAndVariances(x_train, y_trains)
-		self.__updateClassPriors(self, y_train)
+		self.mean, self.variance, self.classes = self.__getMeansAndVariances(x_train, y_train)
+		self.__updateClassPriors(y_train)
 
 	def __getMeansAndVariances(self, x_train, y_train):
 		"""
@@ -77,7 +77,7 @@ class GaussianNaiveBayes(object):
 			means[output_class] = class_mean
 			variance[output_class] = class_variance
 
-		return mean, variance, classes
+		return means, variance, classes
 
 	def __updateClassPriors(self, y_train):
 		"""
@@ -184,12 +184,12 @@ class GaussianNaiveBayes(object):
 
 		self.__validateDataSize(x_test, y_test)
 
-		total_samples = float(y_test.shape[0])
+		total_samples = y_test.shape[0]
 		correctly_classified_count = 0.0
 
 		for i in xrange(total_samples):
 			correctly_classified_count += (self.predict(x_test[i,:]) == y_test[i])
 
-		return correctly_classified_count/total_samples
+		return float(correctly_classified_count)/total_samples
 
 
