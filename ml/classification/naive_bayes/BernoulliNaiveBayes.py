@@ -1,6 +1,6 @@
 import numpy as np
 
-class BinomialNaiveBayes(object):
+class BernoulliNaiveBayes(object):
 
 	def __init__(self, class_priors=None):
 
@@ -66,7 +66,7 @@ class BinomialNaiveBayes(object):
 			return
 
 		class_priors = {}
-		total_instances = float(y_train.shape[0])
+		total_instances = float(output_labels.shape[0])
 
 		for class_label in np.unique(output_labels):
 			instance_count = sum(output_labels==class_label)
@@ -93,8 +93,8 @@ class BinomialNaiveBayes(object):
 
 			total_samples = sum(y_train == class_label)
 
-			for feature_index in feature_count:
-				word_count = sum(x_train[:, feature_index])
+			for feature_index in xrange(feature_count):
+				word_count = sum(x_train[y_train == class_label, feature_index])
 				word_likehood = float(word_count) / total_samples
 
 				self._likelihood.setdefault(class_label, dict())[feature_index] = word_likehood
@@ -118,7 +118,7 @@ class BinomialNaiveBayes(object):
 
 			for feature_index, probs in self._likelihood[class_label].iteritems():
 				does_word_occur = x_test[feature_index]
-				posterior = (probs**does_word_occur) * ( (1-probs)**(1-does_word_occur) )
+				posterior = (probs*does_word_occur) + ( (1-probs)*(1-does_word_occur) )
 				prob = prob * posterior
 
 			if prob > predicted_class_prob:
@@ -127,14 +127,13 @@ class BinomialNaiveBayes(object):
 
 			prob_normalizer += prob
 
-		class_probs = self.__normalize_probabilites(class_probs, prob_normalizer)
+		class_probs = self.__normalize_probabilities(class_probs, prob_normalizer)
 
 		result = [predicted_class]
 
 		if get_probs: result.append(class_probs)
 
 		return result
-
 
 	def __normalize_probabilities(self, probabilites, normalizer):
 		"""
@@ -153,8 +152,27 @@ class BinomialNaiveBayes(object):
 
 		return probabilites
 
+	def score(self, x_test, y_test):
+		"""
+		Returns the mean accuracy of classification on the given data
 
+		Args:
+			x_test (numpy array) : Input feature set
+			y_test (numpy array) : Expected output label
 
+		Returns:
+			precision score (float) : Percentage of samples correctly classified by the classifier
+		"""
 
+		x_test = np.array(x_test)
+		y_test = np.array(y_test)
 
+		self.__validateDataSize(x_test, y_test)
 
+		total_samples = y_test.shape[0]
+		correctly_classified_samples = 0.0
+
+		for i in xrange(total_samples):
+			correctly_classified_samples += (self.predict(x_test[i,:]) == y_test[i])
+
+		return float(correctly_classified_samples) / total_samples

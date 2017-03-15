@@ -176,7 +176,7 @@ class GaussianNaiveBayes(object):
 			y_test (numpy array): Expected output label
 
 		Returns:
-			precision score (float) : Number of samples correctly classified by the classifer
+			precision score (float) : Percentage of samples correctly classified by the classifer
 		"""
 		
 		x_test = np.array(x_test)

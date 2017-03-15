@@ -93,3 +93,5 @@ ENV/
 *.log
 *.gz
 *.aux
+
+/resources
