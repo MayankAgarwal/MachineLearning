@@ -144,9 +144,8 @@ class GaussianNaiveBayes(object):
 
 		predicted_class = None
 		predicted_class_prob = 0.0
-
-		if get_probs:
-			class_probabilities = {}
+		class_probabilities = {}
+		normalizer = 0.0
 
 		for class_label in self.classes:
 
@@ -155,17 +154,37 @@ class GaussianNaiveBayes(object):
 			for i in xrange(x_test.shape[0]):
 				class_prob *= self.__getGaussianProbability(i, x_test[i], class_label)
 
-			if get_probs: class_probabilities[class_label] = class_prob
+			class_probabilities[class_label] = class_prob
+			normalizer += class_prob
 
 			if class_prob > predicted_class_prob:
 				predicted_class_prob = class_prob
 				predicted_class = class_label
+
+		class_probabilities = self.__normalize_probabilities(class_probabilities, normalizer)
 
 		result = [predicted_class]
 
 		if get_probs: result.append(class_probabilities)
 
 		return result
+
+	def __normalize_probabilities(self, probabilites, normalizer):
+		"""
+		Normalizes the probabilites computed by the classifier
+
+		Args:
+			probabilities (dict) : Probabilites of classes represented as key-value pairs
+			normalizer (float) : The normalizing factor
+
+		Returns:
+			probabilities (dict) : Normalized probabilities
+		"""
+
+		for x, prob in probabilites.iteritems():
+			probabilites[x] = float(prob)/normalizer
+
+		return probabilites
 
 	def score(self, x_test, y_test):
 		"""
